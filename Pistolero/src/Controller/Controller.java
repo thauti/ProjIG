@@ -18,6 +18,13 @@ public class Controller {
 		
 
 	}
-	
+	public Model getModel()
+	{
+		return this.model;
+	}
+	public View getView()
+	{
+		return this.view;
+	}
 	
 }

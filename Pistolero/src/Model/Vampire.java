@@ -1,6 +1,6 @@
-package Controller;
+package Model;
 
-public class Vampire {
+public class Vampire extends Model{
 	private int x;
 	private int y;
 	private final int sexe;
