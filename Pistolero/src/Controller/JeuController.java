@@ -8,11 +8,13 @@ public class JeuController  extends Controller {
 	Model m;
 	View v;
 	VampireController vc;
-
+	MapController mc;
 	public JeuController(){
 		super(null,new JeuView());
 		vc  = new VampireController();
-		getView().getChildren().add(vc.getView());
+		mc = new MapController();
+		getView().getChildren().add(mc.getView());
+		//getView().getChildren().add(vc.getView());
 	}
 	public void bouge(){
 

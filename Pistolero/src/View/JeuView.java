@@ -15,9 +15,9 @@ public class JeuView  extends View {
 	public JeuView()
 	{
 		super();
-		r = new Rectangle(10,10,100,100);
-		r.setFill(Color.RED);
-		getChildren().add(r);
+		//r = new Rectangle(10,10,100,100);
+		//r.setFill(Color.RED);
+		//getChildren().add(r);
 	}
 	public void update()
 	{
