@@ -9,10 +9,11 @@ public class JeuController  extends Controller {
 	View v;
 	VampireController vc;
 
-	public JeuController(){		
-			super(null,new JeuView());
+	public JeuController(){
+		super(null,new JeuView());
+		vc  = new VampireController();
+		getView().getChildren().add(vc.getView());
 	}
-	
 	public void bouge(){
 
 	}

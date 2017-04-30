@@ -3,14 +3,13 @@ package Model;
 public class Vampire extends Model{
 	private int x;
 	private int y;
-	private final int sexe;
+	private int sexe;
 	private int vitesse;
 	
-	public Vampire(int x, int y, int sexe, int vitesse){
+	public Vampire(int x, int y, int sexe){
 		this.x = x;
 		this.y = y;
 		this.sexe = sexe;
-		this.vitesse = vitesse;
 	}
 
 	public int getX() {return x;}
