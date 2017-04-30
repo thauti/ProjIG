@@ -1,6 +1,6 @@
 package Model;
 
-import Controller.Vampire;
+import Controller.VampireController;
 
 import java.util.ArrayList;
 

@@ -9,8 +9,7 @@ public class VampireView extends View
 	GraphicsContext gc;
 	public VampireView()
 	{
-		super(64, 64);
-		gc = super.getGraphicsContext2D();
+		super();
 		gc.setFill(Color.BLUE);
 		gc.fillRect(0,0,64,64);
 	}
