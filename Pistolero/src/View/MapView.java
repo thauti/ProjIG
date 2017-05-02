@@ -20,7 +20,6 @@ public class MapView extends View{
         {
             for(int j=0;j<19;j++)
             {
-                floor = new Image("sol.png");
                 ImageView iv;
                 iv = new ImageView();
                 iv.setImage(floor);
@@ -30,7 +29,7 @@ public class MapView extends View{
              //   System.out.println("Map");
             }
         }
-        
+
         getChildren().add(gp);
     }
 }
