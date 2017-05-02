@@ -10,7 +10,7 @@ public class MapView extends View{
     Image floor;
     public MapView()
     {
-        floor = new Image("file: sol.png");
+        floor = new Image("sol.png");
         if(floor.isError())
         {
             System.out.println("Erreur au chargement de l'image "+floor.getException().toString() );
@@ -20,16 +20,17 @@ public class MapView extends View{
         {
             for(int j=0;j<19;j++)
             {
-                //gp.add(null, i, j);
+                floor = new Image("sol.png");
+                ImageView iv;
+                iv = new ImageView();
+                iv.setImage(floor);
+                iv.setFitHeight(32);
+                iv.setFitWidth(32);
+                gp.add(iv, i, j);
              //   System.out.println("Map");
             }
         }
-
-        ImageView iv;
-        iv = new ImageView();
-        iv.setImage(floor);
-        iv.setFitHeight(32);
-        iv.setFitWidth(32);
-        getChildren().add(iv);
+        
+        getChildren().add(gp);
     }
 }
