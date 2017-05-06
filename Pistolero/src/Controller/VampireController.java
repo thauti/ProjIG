@@ -4,10 +4,11 @@ import View.*;
 
 public class VampireController  extends Controller {
 
-	Model m;
-	View v;
+
 	public VampireController(){
-			super(new Vampire(0,0,0), new VampireView());
+			super();
+			this.model = new Vampire(0,20);
+			this.view =  new VampireView(this);
 	}
 	
 	public void bouge(){
