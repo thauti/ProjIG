@@ -4,6 +4,7 @@ import View.*;
 import Model.*;
 
 import javafx.event.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class JeuController  extends Controller {
@@ -25,7 +26,23 @@ public class JeuController  extends Controller {
 		jm=(Joueur)jc.getModel();
 		getView().addEventHandler(KeyEvent.KEY_PRESSED,
 				e -> {
-			jm.setX(jm.getX()+5); jc.update();
+					switch(e.getCode())
+					{
+						case LEFT:
+							jm.setX(jm.getX()-5);
+							break;
+						case RIGHT:
+							jm.setX(jm.getX()+5);
+							break;
+						case UP:
+							jm.setY(jm.getY()-5);
+							break;
+						case DOWN:
+							jm.setY(jm.getY()+5);
+							break;
+
+					}
+			jc.update();
 		}
 		);
 	}
