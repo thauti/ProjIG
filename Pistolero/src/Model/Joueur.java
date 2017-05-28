@@ -1,9 +1,12 @@
 package Model;
 
+import Controller.BalleController;
+
 public class Joueur extends Model {
     private int x;
     private int y;
     private int santé = 100;
+    int pos;
     public Joueur()
     {
         x = 200;
@@ -28,5 +31,16 @@ public class Joueur extends Model {
 
     public void setSanté(int santé) {
         this.santé = santé;
+    }
+    public int getPos()
+    {
+        return this.pos;
+    }
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public void tirer(int x, int y, int d) {
+        new BalleController(x, y, d);
     }
 }

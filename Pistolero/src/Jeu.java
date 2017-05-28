@@ -1,6 +1,7 @@
 import Controller.*;
 import Model.*;
 import View.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
@@ -19,7 +20,10 @@ public class Jeu extends Application{
 		JeuController jc = new JeuController();
 		primaryStage.setScene(new Scene(jc.getView(), 800, 600));
 		primaryStage.setResizable(false);
+
 		primaryStage.show();
+
+
 	}
 
 }
