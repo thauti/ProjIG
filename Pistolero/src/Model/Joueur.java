@@ -3,8 +3,8 @@ package Model;
 import Controller.BalleController;
 
 public class Joueur extends Model {
-    private double x;
-    private double y;
+    public static double x;
+    public static double y;
     private int santé = 100;
     int pos;
     public Joueur()
