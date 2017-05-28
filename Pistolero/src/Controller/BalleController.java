@@ -8,7 +8,7 @@ public class BalleController  extends Controller{
     public int direction;
     public double orgx, orgy;
 
-
+    public static int balle = 5;
     public BalleController(double orgx, double orgy, int direction)
     {
         super();

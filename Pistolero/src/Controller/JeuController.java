@@ -25,7 +25,7 @@ public class JeuController  extends Controller {
 	public static int score = 0;
 	public static Text score_t;
 
-
+	public static Text balle;
 
 	int shoot = 0;
 	int bouge = 0;
@@ -38,11 +38,12 @@ public class JeuController  extends Controller {
 		JeuController.score_t.setX(5);
 		JeuController.score_t.setY(15);
 
-
+		JeuController.balle = new Text(5,35,"Balles : "+ BalleController.balle);
 		getView().getChildren().add(mc.getView());
 		getView().getChildren().add(vc.getView());
 		getView().getChildren().add(jc.getView());
 		getView().getChildren().add(score_t);
+		getView().getChildren().add(balle);
 		jm = (Joueur) jc.getModel();
 		new AnimationTimer() {
 			@Override
@@ -52,32 +53,41 @@ public class JeuController  extends Controller {
 		}.start();
 
 		getView().setOnKeyPressed(
+
 				e -> {
+					bouge = 1;
 					switch (e.getCode()) {
 						case LEFT:
 							dir = 3;
-							bouge = 1;
 							break;
 						case RIGHT:
 							dir = 2;
-							bouge = 1;
 							break;
 						case UP:
 							dir = 1;
-							bouge = 1;
 							break;
 						case DOWN:
 							dir = 0;
-							bouge = 1;
 							break;
 						case SPACE:
-							if (shoot == 0) {
-								shoot = 1;
-								getView().getChildren().add(new BalleController(jm.getX(), jm.getY(), jm.getPos()).getView());
+							bouge =0;
+							if(BalleController.balle > 0) {
+								if (shoot == 0) {
+									shoot = 1;
+									getView().getChildren().add(new BalleController(jm.getX(), jm.getY(), jm.getPos()).getView());
+									BalleController.balle--;
+
+									JeuController.updateBalle();
+									if(BalleController.balle == 0)
+									{
+										Thread t = new Thread(new ThreadBalles());
+										t.start();
+									}
+								}
+
 							}
 							break;
 					}
-					jc.update();
 				}
 		);
 		getView().setOnKeyReleased(
@@ -139,7 +149,12 @@ public class JeuController  extends Controller {
 	}
 	public static void updateScore()
 	{
-		JeuController.score_t = new Text("Score : "+JeuController.score);
+		JeuController.score_t.setText("Score : "+JeuController.score);
+
+	}
+	public static void updateBalle()
+	{
+		JeuController.balle.setText("Balles : "+ BalleController.balle);
 
 	}
 	
