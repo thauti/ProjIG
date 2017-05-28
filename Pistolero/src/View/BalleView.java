@@ -19,8 +19,8 @@ public class BalleView extends View {
         orgy = balleController.orgy;
         x = orgx+16;
         y = orgy+16;
-        c = new Circle(x,y,10);
-        c.setFill(Color.RED);
+        c = new Circle(x,y,3);
+        c.setFill(Color.BLACK);
 
         System.out.print(x);
         getChildren().add(c);
@@ -30,16 +30,20 @@ public class BalleView extends View {
                 switch (dir)
                 {
                     case 0:
-                        c.setCenterY(y-1);
+                        y =y +1;
+                        c.setCenterY(y);
                         break;
                     case 1:
-                        c.setCenterY(y+1);
+                        y=y-1;
+                        c.setCenterY(y);
                         break;
                     case 2:
-                        c.setCenterX(x-1);
+                        x=x+1;
+                        c.setCenterX(x);
                         break;
                     case 3:
-                        c.setCenterX(x+1);
+                        x=x-1;
+                        c.setCenterX(x);
                         break;
                 }
             }
