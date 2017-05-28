@@ -7,12 +7,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class JoueurView extends View {
     JoueurController jc;
     Joueur jm;
     Image droite, gauche, haut, bas;
     ImageView cr;
+
+    Text vie;
     public JoueurView(JoueurController jc)
     {
         this.setFocusTraversable(true);
@@ -20,7 +23,9 @@ public class JoueurView extends View {
         this.jc = jc;
         jm = (Joueur) jc.getModel();
 
-
+        vie = new Text("Vie : "+ jm.getSanté());
+        vie.setX(5);
+        vie.setY(25);
         droite = new Image("soldat_droite.png");
         if(droite.isError())
         {
@@ -46,7 +51,7 @@ public class JoueurView extends View {
         cr.setX(jm.getX());
         cr.setY(jm.getY());
         getChildren().add(cr);
-
+        getChildren().add(vie);
     }
     public void update()
     {

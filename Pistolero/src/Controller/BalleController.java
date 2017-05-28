@@ -2,15 +2,14 @@ package Controller;
 
 import Model.Balle;
 import View.BalleView;
-import javafx.animation.AnimationTimer;
 
 
 public class BalleController  extends Controller{
     public int direction;
-    public int orgx, orgy;
+    public double orgx, orgy;
 
 
-    public BalleController(int orgx, int orgy, int direction)
+    public BalleController(double orgx, double orgy, int direction)
     {
         super();
         this.orgx = orgx;

@@ -3,8 +3,8 @@ package Model;
 import Controller.BalleController;
 
 public class Joueur extends Model {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private int santé = 100;
     int pos;
     public Joueur()
@@ -13,25 +13,29 @@ public class Joueur extends Model {
         y = 200;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
     public void setSanté(int santé) {
         this.santé = santé;
     }
+    public int getSanté() {
+     return santé;
+    }
+
     public int getPos()
     {
         return this.pos;

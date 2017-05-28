@@ -8,9 +8,9 @@ import javafx.scene.shape.Circle;
 public class BalleView extends View {
     BalleController bc;
     int dir;
-    int orgx, orgy;
+    double orgx, orgy;
     Circle c;
-    int x, y;
+    double x, y;
     public BalleView(BalleController balleController) {
         super();
         bc = balleController;
