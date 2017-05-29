@@ -10,6 +10,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 import static java.lang.Thread.sleep;
 
 public class JeuController  extends Controller {
@@ -26,6 +28,7 @@ public class JeuController  extends Controller {
 	public static int score = 0;
 	public static Text score_t;
 
+	public static ArrayList<BalleController> balleliste;
 	public static Text balle;
 
 	boolean rafale = false;
@@ -36,6 +39,7 @@ public class JeuController  extends Controller {
 		jc = new JoueurController();
 		vc = new VampireController();
 		mc = new MapController();
+		JeuController.balleliste  = new ArrayList<BalleController>();
 		JeuController.score_t = new Text("Score : " + JeuController.score);
 		JeuController.score_t.setX(5);
 		JeuController.score_t.setY(15);
@@ -47,6 +51,8 @@ public class JeuController  extends Controller {
 		getView().getChildren().add(score_t);
 		getView().getChildren().add(balle);
 		jm = (Joueur) jc.getModel();
+
+
 		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
@@ -77,6 +83,8 @@ public class JeuController  extends Controller {
 								BalleController bc;
 								if(rafale){
 									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
+									JeuController.balleliste.add(bc);
+
 									current = bc.getView();
 									getView().getChildren().add(bc.getView());
 									BalleController.balle--;
@@ -90,6 +98,7 @@ public class JeuController  extends Controller {
 								}else if (shoot == 0) {
 									shoot = 1;
 									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
+									JeuController.balleliste.add(bc);
 									current = bc.getView();
 									getView().getChildren().add(bc.getView());
 									BalleController.balle--;

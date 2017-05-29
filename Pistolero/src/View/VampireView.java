@@ -1,7 +1,9 @@
 package View;
 
+import Controller.BalleController;
 import Controller.JeuController;
 import Controller.VampireController;
+import Model.Balle;
 import Model.Joueur;
 import Model.Vampire;
 import javafx.animation.AnimationTimer;
@@ -12,6 +14,8 @@ import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
+
 public class VampireView extends View
 {
 	Image img1;
@@ -20,6 +24,9 @@ public class VampireView extends View
 	ImageView iv;
 	VampireController vc;
 	Vampire vm;
+	ArrayList<BalleController> balleremove;
+
+	boolean touche = false;
 	public VampireView(VampireController c)
 	{
 		super();
@@ -45,30 +52,66 @@ public class VampireView extends View
 			}
 		}.start();
 	}
-	public void update()
-	{
+	public void update() {
+		if (vm.getVie() != 0) {
+			BalleController balle = null;
+			for (BalleController b : JeuController.balleliste) {
+				BalleView v = b.getView();
 
-		if(Joueur.x < vm.getX())
-		{
-			vm.setX(vm.getX()-.05);
+				double x = vm.getX();
+				double y = vm.getY();
+				if (v.x < x + 32 && v.x > x) {
+					if (v.y < y + 32 && v.y > y) {
 
+						vm.setVie(vm.getVie() - 1);
+						updateSkin();
+						JeuController.score = JeuController.score+10;
+						JeuController.updateScore();
+						balle = b;
+					}
+				}
+			}
+			if (balle != null) {
+				JeuController.balleliste.remove(balle);
+			}
+			if (Joueur.x < vm.getX()) {
+				vm.setX(vm.getX() - .05);
+
+			}
+			if (Joueur.x > vm.getX()) {
+				vm.setX(vm.getX() + .05);
+
+			}
+			if (Joueur.y < vm.getY()) {
+				vm.setY(vm.getY() - .05);
+
+			}
+			if (Joueur.y > vm.getY()) {
+				vm.setY(vm.getY() + .05);
+
+			}
+			iv.setX(vm.getX());
+			iv.setY(vm.getY());
 		}
-		if(Joueur.x > vm.getX())
-		{
-			vm.setX(vm.getX()+.05);
+	}
 
-		}
-		 if(Joueur.y < vm.getY())
+	private void updateSkin() {
+		System.out.println(vm.getVie());
+		if(vm.getVie() <= 0)
 		{
-			vm.setY(vm.getY()-.05);
-
+			iv.setImage(img3);
 		}
-		if(Joueur.y > vm.getY())
+		if(vm.getVie() == 1)
 		{
-			vm.setY(vm.getY()+.05);
-
+			iv.setImage(img2);
 		}
-		iv.setX(vm.getX());
-		iv.setY(vm.getY());
+		if(vm.getVie() == 2)
+		{
+			iv.setImage(img2);
+		}
+		if(vm.getVie() == 3)
+		{
+			iv.setImage(img1);
+		}
 	}
 }
