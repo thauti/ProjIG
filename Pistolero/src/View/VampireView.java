@@ -1,5 +1,6 @@
 package View;
 
+import Controller.JeuController;
 import Controller.VampireController;
 import Model.Joueur;
 import Model.Vampire;
@@ -31,7 +32,7 @@ public class VampireView extends View
 		iv = new ImageView(img1);
 		iv.setX(vm.getX());
 		iv.setY(vm.getY());
-		System.out.println("Création de la vue vampire");
+		System.out.println("Creation de la vue vampire");
 		getChildren().add(iv);
 
 		new AnimationTimer()
@@ -40,6 +41,7 @@ public class VampireView extends View
 			@Override
 			public void handle(long now) {
 				update();
+				
 			}
 		}.start();
 	}
@@ -48,22 +50,26 @@ public class VampireView extends View
 
 		if(Joueur.x < vm.getX())
 		{
-			vm.setX(vm.getX()-.05);
+			//vm.setX(vm.getX()-.05);
+			vm.setX(vm.getX()-.20);
 
 		}
 		if(Joueur.x > vm.getX())
 		{
-			vm.setX(vm.getX()+.05);
+			//vm.setX(vm.getX()+.05);
+			vm.setX(vm.getX()+.20);
 
 		}
 		 if(Joueur.y < vm.getY())
 		{
-			vm.setY(vm.getY()-.05);
+			//vm.setY(vm.getY()-.05);
+			 vm.setY(vm.getY()-.20);
 
 		}
 		if(Joueur.y > vm.getY())
 		{
-			vm.setY(vm.getY()+.05);
+			//vm.setY(vm.getY()+.05);
+			vm.setY(vm.getY()+.20);
 
 		}
 		iv.setX(vm.getX());

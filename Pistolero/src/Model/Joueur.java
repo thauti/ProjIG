@@ -5,7 +5,7 @@ import Controller.BalleController;
 public class Joueur extends Model {
     public static double x;
     public static double y;
-    private int santé = 100;
+    private int sante = 300;
     int pos;
     public Joueur()
     {
@@ -29,11 +29,11 @@ public class Joueur extends Model {
         return y;
     }
 
-    public void setSanté(int santé) {
-        this.santé = santé;
+    public void setSante(int sante) {
+        this.sante = sante;
     }
-    public int getSanté() {
-     return santé;
+    public int getSante() {
+     return sante;
     }
 
     public int getPos()

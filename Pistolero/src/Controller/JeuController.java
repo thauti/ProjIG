@@ -20,6 +20,7 @@ public class JeuController  extends Controller {
 	MapController mc;
 	JoueurController jc;
 	Joueur jm;
+	public static BalleView current;
 	int dir;
 
 	public static int score = 0;
@@ -27,6 +28,7 @@ public class JeuController  extends Controller {
 
 	public static Text balle;
 
+	boolean rafale = false;
 	int shoot = 0;
 	int bouge = 0;
 	public JeuController() {
@@ -72,11 +74,26 @@ public class JeuController  extends Controller {
 						case SPACE:
 							bouge =0;
 							if(BalleController.balle > 0) {
-								if (shoot == 0) {
-									shoot = 1;
-									getView().getChildren().add(new BalleController(jm.getX(), jm.getY(), jm.getPos()).getView());
+								BalleController bc;
+								if(rafale){
+									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
+									current = bc.getView();
+									getView().getChildren().add(bc.getView());
 									BalleController.balle--;
-
+									
+									JeuController.updateBalle();
+									if(BalleController.balle == 0)
+									{
+										Thread t = new Thread(new ThreadBalles());
+										t.start();
+									}
+								}else if (shoot == 0) {
+									shoot = 1;
+									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
+									current = bc.getView();
+									getView().getChildren().add(bc.getView());
+									BalleController.balle--;
+									
 									JeuController.updateBalle();
 									if(BalleController.balle == 0)
 									{
@@ -84,8 +101,14 @@ public class JeuController  extends Controller {
 										t.start();
 									}
 								}
-
+								
 							}
+							break;
+						case R:
+							bouge = 0;
+							System.out.println("rafale = : "+rafale);
+							rafale = !rafale;
+							System.out.println("rafale = : "+rafale);
 							break;
 					}
 				}
@@ -113,25 +136,29 @@ public class JeuController  extends Controller {
 						case 0:
 							if (jm.getY() < 580) {
 								jm.setPos(0);
-								jm.setY(jm.getY() + 0.2);
+								//jm.setY(jm.getY() + 0.2);
+								jm.setY(jm.getY() + 10);
 							}
 							break;
 						case 1:
 							if (jm.getY() > 0) {
 								jm.setPos(1);
-								jm.setY(jm.getY() - 0.2);
+								//jm.setY(jm.getY() - 0.2);
+								jm.setY(jm.getY() - 10);
 							}
 							break;
 						case 2:
 							if (jm.getX() < 780) {
 								jm.setPos(2);
-								jm.setX(jm.getX() + 0.2);
+								//jm.setX(jm.getX() + 0.2);
+								jm.setX(jm.getX() + 10);
 							}
 							break;
 						case 3:
 							if (jm.getX() > 0) {
 								jm.setPos(3);
-								jm.setX(jm.getX() - 0.2);
+								//jm.setX(jm.getX() - 0.2);
+								jm.setX(jm.getX() - 10);
 								break;
 							}
 					}

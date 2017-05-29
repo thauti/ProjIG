@@ -22,7 +22,7 @@ public class BalleView extends View {
         c = new Circle(x,y,3);
         c.setFill(Color.BLACK);
 
-        System.out.print(x);
+        //System.out.print(x);
         getChildren().add(c);
         new AnimationTimer() {
             @Override
@@ -30,19 +30,19 @@ public class BalleView extends View {
                 switch (dir)
                 {
                     case 0:
-                        y =y +1;
+                        y =y +5;
                         c.setCenterY(y);
                         break;
                     case 1:
-                        y=y-1;
+                        y=y-5;
                         c.setCenterY(y);
                         break;
                     case 2:
-                        x=x+1;
+                        x=x+5;
                         c.setCenterX(x);
                         break;
                     case 3:
-                        x=x-1;
+                        x=x-5;
                         c.setCenterX(x);
                         break;
                 }
