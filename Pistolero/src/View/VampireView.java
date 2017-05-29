@@ -72,7 +72,7 @@ public class VampireView extends View
 				}
 			}
 			if (balle != null) {
-				JeuController.balleliste.remove(balle);
+				balle.getView().detruire();
 			}
 			if (Joueur.x < vm.getX()) {
 				vm.setX(vm.getX() - .05);

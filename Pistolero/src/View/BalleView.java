@@ -1,6 +1,7 @@
 package View;
 
 import Controller.BalleController;
+import Controller.JeuController;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -11,6 +12,7 @@ public class BalleView extends View {
     double orgx, orgy;
     Circle c;
     double x, y;
+    boolean elimine=false;
     public BalleView(BalleController balleController) {
         super();
         bc = balleController;
@@ -27,26 +29,42 @@ public class BalleView extends View {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                switch (dir)
-                {
-                    case 0:
-                        y =y +5;
-                        c.setCenterY(y);
-                        break;
-                    case 1:
-                        y=y-5;
-                        c.setCenterY(y);
-                        break;
-                    case 2:
-                        x=x+5;
-                        c.setCenterX(x);
-                        break;
-                    case 3:
-                        x=x-5;
-                        c.setCenterX(x);
-                        break;
+                if(elimine==false) {
+
+                    if (c.getCenterX() > 800 || c.getCenterX() < 0) {
+                        getChildren().remove(c);
+                        JeuController.balleliste.remove(bc);
+                    }
+                    if (c.getCenterY() < 0 || c.getCenterY() > 600) {
+                        getChildren().remove(c);
+                        JeuController.balleliste.remove(bc);
+                    }
+                    switch (dir) {
+                        case 0:
+                            y = y + 5;
+                            c.setCenterY(y);
+                            break;
+                        case 1:
+                            y = y - 5;
+                            c.setCenterY(y);
+                            break;
+                        case 2:
+                            x = x + 5;
+                            c.setCenterX(x);
+                            break;
+                        case 3:
+                            x = x - 5;
+                            c.setCenterX(x);
+                            break;
+                    }
                 }
             }
         }.start();
+    }
+    public void detruire()
+    {
+        elimine =true;
+        getChildren().remove(c);
+        JeuController.balleliste.remove(bc);
     }
 }
