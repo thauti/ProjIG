@@ -10,7 +10,7 @@ public class BalleController  extends Controller{
 
     protected BalleView balleView;
     
-    public static int balle = 500;
+    public static int balle = 5;
     public BalleController(double orgx, double orgy, int direction)
     {
         super();

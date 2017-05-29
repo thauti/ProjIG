@@ -50,26 +50,22 @@ public class VampireView extends View
 
 		if(Joueur.x < vm.getX())
 		{
-			//vm.setX(vm.getX()-.05);
-			vm.setX(vm.getX()-.20);
+			vm.setX(vm.getX()-.05);
 
 		}
 		if(Joueur.x > vm.getX())
 		{
-			//vm.setX(vm.getX()+.05);
-			vm.setX(vm.getX()+.20);
+			vm.setX(vm.getX()+.05);
 
 		}
 		 if(Joueur.y < vm.getY())
 		{
-			//vm.setY(vm.getY()-.05);
-			 vm.setY(vm.getY()-.20);
+			vm.setY(vm.getY()-.05);
 
 		}
 		if(Joueur.y > vm.getY())
 		{
-			//vm.setY(vm.getY()+.05);
-			vm.setY(vm.getY()+.20);
+			vm.setY(vm.getY()+.05);
 
 		}
 		iv.setX(vm.getX());

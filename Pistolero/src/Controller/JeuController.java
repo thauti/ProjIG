@@ -136,29 +136,29 @@ public class JeuController  extends Controller {
 						case 0:
 							if (jm.getY() < 580) {
 								jm.setPos(0);
-								//jm.setY(jm.getY() + 0.2);
-								jm.setY(jm.getY() + 10);
+								jm.setY(jm.getY() + 0.2);
+
 							}
 							break;
 						case 1:
 							if (jm.getY() > 0) {
 								jm.setPos(1);
-								//jm.setY(jm.getY() - 0.2);
-								jm.setY(jm.getY() - 10);
+								jm.setY(jm.getY() - 0.2);
+
 							}
 							break;
 						case 2:
 							if (jm.getX() < 780) {
 								jm.setPos(2);
-								//jm.setX(jm.getX() + 0.2);
-								jm.setX(jm.getX() + 10);
+								jm.setX(jm.getX() + 0.2);
+
 							}
 							break;
 						case 3:
 							if (jm.getX() > 0) {
 								jm.setPos(3);
-								//jm.setX(jm.getX() - 0.2);
-								jm.setX(jm.getX() - 10);
+								jm.setX(jm.getX() - 0.2);
+
 								break;
 							}
 					}
