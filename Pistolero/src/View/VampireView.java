@@ -2,6 +2,7 @@ package View;
 
 import Controller.BalleController;
 import Controller.JeuController;
+import Controller.JoueurController;
 import Controller.VampireController;
 import Model.Balle;
 import Model.Joueur;
@@ -13,6 +14,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -23,8 +26,9 @@ public class VampireView extends View
 	Image img3;
 	ImageView iv;
 	VampireController vc;
-	Vampire vm;
+	public Vampire vm;
 	ArrayList<BalleController> balleremove;
+	double vitesse;
 
 	boolean touche = false;
 	public VampireView(VampireController c)
@@ -41,7 +45,8 @@ public class VampireView extends View
 		iv.setY(vm.getY());
 		System.out.println("Creation de la vue vampire");
 		getChildren().add(iv);
-
+		vitesse = Math.random();
+		
 		new AnimationTimer()
 		{
 
@@ -75,26 +80,75 @@ public class VampireView extends View
 				balle.getView().detruire();
 			}
 			if (Joueur.x < vm.getX()) {
-				vm.setX(vm.getX() - .05);
-
+				//vm.setX(vm.getX() - 0.5);
+				vm.setX(vm.getX() - vitesse);
+				mordre();
 			}
 			if (Joueur.x > vm.getX()) {
-				vm.setX(vm.getX() + .05);
-
+				//vm.setX(vm.getX() + 0.5);
+				vm.setX(vm.getX() + vitesse);
+				mordre();
 			}
 			if (Joueur.y < vm.getY()) {
-				vm.setY(vm.getY() - .05);
-
+				//vm.setY(vm.getY() - 0.5);
+				vm.setY(vm.getY() - vitesse);
+				mordre();
 			}
 			if (Joueur.y > vm.getY()) {
-				vm.setY(vm.getY() + .05);
-
+				//vm.setY(vm.getY() + 0.5);
+				vm.setY(vm.getY() + vitesse);
+				mordre();
 			}
 			iv.setX(vm.getX());
 			iv.setY(vm.getY());
 		}
+		JeuController.vampire(vm);
 	}
+	public boolean mordre(){
+		JoueurController jc= JeuController.jc;
+		JoueurView jv = jc.getView();
 
+		double x = vm.getX();
+		double y = vm.getY();
+		double testx = jv.getX();
+		double testy = jv.getY();
+		
+		if(!JeuController.getTouche()){
+			if (testx <= x + 32 && testx >= x) {
+				if (testy <= y + 32 && testy >= y) {					
+					System.out.println("collision vampire");
+					Joueur joueur = jv.getJoueur();
+					joueur.setSante(joueur.getSante()-100);
+					if(joueur.getSante() == 0){
+						jv.droite = new Image("demon_mort.png");
+						jv.gauche = new Image("demon_mort.png");
+						jv.haut = new Image("demon_mort.png");
+						jv.bas = new Image("demon_mort.png");
+						//System.exit(0);
+					}else{
+						JeuController.score = JeuController.score-20;	
+					}
+					JeuController.updateScore();
+					JeuController.setTouche(true);
+					(new Thread() {
+						  public void run() {
+							  try {
+								sleep(3000);
+								JeuController.setTouche(false);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							    
+							  }
+							 }).start();
+		
+				}
+			}
+		}
+		return true;
+	}
+	
 	private void updateSkin() {
 		System.out.println(vm.getVie());
 		if(vm.getVie() <= 0)
@@ -113,5 +167,8 @@ public class VampireView extends View
 		{
 			iv.setImage(img1);
 		}
+	}
+	public Vampire getVm(){
+		return vm;
 	}
 }

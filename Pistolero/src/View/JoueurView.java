@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 public class JoueurView extends View {
     JoueurController jc;
     Joueur jm;
-    Image droite, gauche, haut, bas;
+    public Image droite, gauche, haut, bas;
     ImageView cr;
 
     Text vie;
@@ -68,5 +68,14 @@ public class JoueurView extends View {
         }
         cr.setX(jm.getX());
         cr.setY(jm.getY());
+    }
+    public double getX(){
+    	return cr.getX();
+    }
+    public double getY(){
+    	return cr.getY();
+    }
+    public Joueur getJoueur(){
+    	return jm;
     }
 }
