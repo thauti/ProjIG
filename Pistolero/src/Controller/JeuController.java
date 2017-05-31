@@ -20,7 +20,7 @@ public class JeuController  extends Controller {
 	static int vampireSize = 5;
 	Model m;
 	static View v;
-	static VampireController[] tabvc;
+	static ArrayList<VampireController> arrayVamp;
 	MapController mc;
 	public static JoueurController jc;
 	Joueur jm;
@@ -32,7 +32,8 @@ public class JeuController  extends Controller {
 
 	public static ArrayList<BalleController> balleliste;
 	public static Text balle;
-
+	
+	public static boolean collisionVamp;
 	boolean rafale = false;
 	static boolean touche = false;
 	int shoot = 0;
@@ -40,9 +41,9 @@ public class JeuController  extends Controller {
 	public JeuController() {
 		super(null, new JeuView());
 		jc = new JoueurController();
-		tabvc = new VampireController[vampireSize];
+		arrayVamp = new ArrayList<VampireController>();
 		for(int i = 0; i < vampireSize; i++){
-			tabvc[i] = new VampireController();
+			arrayVamp.add(new VampireController());
 		}
 		mc = new MapController();
 		JeuController.balleliste  = new ArrayList<BalleController>();
@@ -53,14 +54,15 @@ public class JeuController  extends Controller {
 		JeuController.balle = new Text(5,35,"Balles : "+ BalleController.balle);
 		getView().getChildren().add(mc.getView());
 		for(int i = 0; i < vampireSize; i++){
-			getView().getChildren().add(tabvc[i].getView());
+			getView().getChildren().add(arrayVamp.get(i).getView());
 		}
 		getView().getChildren().add(jc.getView());
 		getView().getChildren().add(score_t);
 		getView().getChildren().add(balle);
 		v = getView();
 		jm = (Joueur) jc.getModel();
-
+		this.collisionVamp = false;
+		
 
 		new AnimationTimer() {
 			@Override
@@ -204,39 +206,41 @@ public class JeuController  extends Controller {
 	}
 	public boolean mordu(){
 		if(!touche){
-			for(int i = 0; i < vampireSize; i++){
-				double x = tabvc[i].getView().vm.getX();
-				double y = tabvc[i].getView().vm.getY();
+			for(int i = 0; i < arrayVamp.size(); i++){
+				double x = arrayVamp.get(i).getView().vm.getX();
+				double y = arrayVamp.get(i).getView().vm.getY();
 				double testx = jc.jv.getX();
 				double testy = jc.jv.getY();
-				if (testx <= x + 32 && testx >= x) {
-					if (testy <= y + 32 && testy >= y) {
-						System.out.println("collision joueur");
-						Joueur joueur = jc.jv.getJoueur();
-						joueur.setSante(joueur.getSante()-100);
-						if(joueur.getSante() == 0){
-							jc.jv.droite = new Image("demon_mort.png");
-							jc.jv.gauche = new Image("demon_mort.png");
-							jc.jv.haut = new Image("demon_mort.png");
-							jc.jv.bas = new Image("demon_mort.png");
-							//System.exit(0);
-						}else{
-							JeuController.score = JeuController.score-20;	
+				if(arrayVamp.get(i).vm.mort == false){	
+					if (testx <= x + 32 && testx >= x) {
+						if (testy <= y + 32 && testy >= y) {
+							System.out.println("collision joueur");
+							Joueur joueur = jc.jv.getJoueur();
+							joueur.setSante(joueur.getSante()-100);
+							if(joueur.getSante() == 0){
+								jc.jv.droite = new Image("demon_mort.png");
+								jc.jv.gauche = new Image("demon_mort.png");
+								jc.jv.haut = new Image("demon_mort.png");
+								jc.jv.bas = new Image("demon_mort.png");
+								//System.exit(0);
+							}else{
+								JeuController.score = JeuController.score-20;	
+							}
+							JeuController.updateScore();
+							touche = true;
+							(new Thread() {
+								  public void run() {
+									  try {
+										sleep(3);
+										touche = false;
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									    
+									  }
+									 }).start();
 						}
-						JeuController.updateScore();
-						touche = true;
-						(new Thread() {
-							  public void run() {
-								  try {
-									sleep(3);
-									touche = false;
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								    
-								  }
-								 }).start();
 					}
 				}
 			}
@@ -267,28 +271,5 @@ public class JeuController  extends Controller {
 	public static void setTouche(boolean t){
 		touche = t;
 	}
-	public static boolean vampire(Vampire vm){
-		double x = vm.getX();
-		double y = vm.getY();
-		for(int i = 0; i < vampireSize; i++){
-			Vampire vamp = tabvc[i].vampireView.getVm();
-			if(vamp != vm){
-				double testx = vamp.getX();
-				double testy = vamp.getY();
-				if (testx <= x + 32 && testx >= x) {
-					if (testy <= y + 32 && testy >= y) {
-						double rand = Math.random()*50-25;
-						vm.setX(x + rand);
-						vm.setY(y + rand);
-					}
-				}
-				
-			}
-			
-		}
-
-		
-		return true;
-	}
-
+	
 }

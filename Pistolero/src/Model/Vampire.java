@@ -5,6 +5,7 @@ public class Vampire extends Model{
 	private double y;
 	private double vitesse;
 	int vie = 3;
+	public boolean mort = false;
 	
 	public Vampire(int x, int y){
 		this.x = x;

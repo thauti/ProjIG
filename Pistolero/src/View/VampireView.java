@@ -45,8 +45,7 @@ public class VampireView extends View
 		iv.setY(vm.getY());
 		System.out.println("Creation de la vue vampire");
 		getChildren().add(iv);
-		vitesse = Math.random();
-		
+		vitesse = (Math.random()+0.5);
 		new AnimationTimer()
 		{
 
@@ -82,77 +81,34 @@ public class VampireView extends View
 			if (Joueur.x < vm.getX()) {
 				//vm.setX(vm.getX() - 0.5);
 				vm.setX(vm.getX() - vitesse);
-				mordre();
+				VampireController.mordre(vm);
 			}
 			if (Joueur.x > vm.getX()) {
 				//vm.setX(vm.getX() + 0.5);
 				vm.setX(vm.getX() + vitesse);
-				mordre();
+				VampireController.mordre(vm);
 			}
 			if (Joueur.y < vm.getY()) {
 				//vm.setY(vm.getY() - 0.5);
 				vm.setY(vm.getY() - vitesse);
-				mordre();
+				VampireController.mordre(vm);
 			}
 			if (Joueur.y > vm.getY()) {
 				//vm.setY(vm.getY() + 0.5);
 				vm.setY(vm.getY() + vitesse);
-				mordre();
+				VampireController.mordre(vm);
 			}
 			iv.setX(vm.getX());
 			iv.setY(vm.getY());
 		}
-		JeuController.vampire(vm);
+		VampireController.vampire(vm);
 	}
-	public boolean mordre(){
-		JoueurController jc= JeuController.jc;
-		JoueurView jv = jc.getView();
-
-		double x = vm.getX();
-		double y = vm.getY();
-		double testx = jv.getX();
-		double testy = jv.getY();
 		
-		if(!JeuController.getTouche()){
-			if (testx <= x + 32 && testx >= x) {
-				if (testy <= y + 32 && testy >= y) {					
-					System.out.println("collision vampire");
-					Joueur joueur = jv.getJoueur();
-					joueur.setSante(joueur.getSante()-100);
-					if(joueur.getSante() == 0){
-						jv.droite = new Image("demon_mort.png");
-						jv.gauche = new Image("demon_mort.png");
-						jv.haut = new Image("demon_mort.png");
-						jv.bas = new Image("demon_mort.png");
-						//System.exit(0);
-					}else{
-						JeuController.score = JeuController.score-20;	
-					}
-					JeuController.updateScore();
-					JeuController.setTouche(true);
-					(new Thread() {
-						  public void run() {
-							  try {
-								sleep(3000);
-								JeuController.setTouche(false);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							    
-							  }
-							 }).start();
-		
-				}
-			}
-		}
-		return true;
-	}
-	
-	private void updateSkin() {
+	public void updateSkin() {
 		System.out.println(vm.getVie());
 		if(vm.getVie() <= 0)
 		{
+			vc.vm.mort = true;
 			iv.setImage(img3);
 		}
 		if(vm.getVie() == 1)
@@ -170,5 +126,8 @@ public class VampireView extends View
 	}
 	public Vampire getVm(){
 		return vm;
+	}
+	public ImageView getIV(){
+		return iv;
 	}
 }
