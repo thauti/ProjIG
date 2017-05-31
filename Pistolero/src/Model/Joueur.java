@@ -1,11 +1,13 @@
 package Model;
 
 import Controller.BalleController;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class Joueur extends Model {
     public static double x;
     public static double y;
-    private int sante = 300;
+    private IntegerProperty sante = new SimpleIntegerProperty(300);
     int pos;
     public Joueur()
     {
@@ -29,10 +31,10 @@ public class Joueur extends Model {
         return y;
     }
 
-    public void setSante(int sante) {
+    public void setSante(IntegerProperty sante) {
         this.sante = sante;
     }
-    public int getSante() {
+    public IntegerProperty getSante() {
      return sante;
     }
 

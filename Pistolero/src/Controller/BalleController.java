@@ -2,6 +2,8 @@ package Controller;
 
 import Model.Balle;
 import View.BalleView;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.IntegerProperty;
 
 
 public class BalleController  extends Controller{
@@ -10,7 +12,7 @@ public class BalleController  extends Controller{
 
     protected BalleView balleView;
     
-    public static int balle = 10;
+    public static IntegerProperty balle;
     public BalleController(double orgx, double orgy, int direction)
     {
         super();

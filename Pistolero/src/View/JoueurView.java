@@ -23,9 +23,10 @@ public class JoueurView extends View {
         this.jc = jc;
         jm = (Joueur) jc.getModel();
 
-        vie = new Text("Vie : "+ jm.getSante());
+        vie = new Text();
+        vie.textProperty().bind(jm.getSante().asString());
         vie.setX(5);
-        vie.setY(25);
+        vie.setY(30);
         droite = new Image("soldat_droite.png");
         if(droite.isError())
         {

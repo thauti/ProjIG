@@ -69,8 +69,7 @@ public class VampireView extends View
 
 						vm.setVie(vm.getVie() - 1);
 						updateSkin();
-						JeuController.score = JeuController.score+10;
-						JeuController.updateScore();
+						JeuController.score_property.set(JeuController.score_property.getValue()+10);
 						balle = b;
 					}
 				}

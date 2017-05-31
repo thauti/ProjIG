@@ -51,17 +51,19 @@ public class VampireController  extends Controller {
 					if (testy <= y + 32 && testy >= y) {					
 						System.out.println("collision vampire");
 						Joueur joueur = jv.getJoueur();
-						joueur.setSante(joueur.getSante()-100);
-						if(joueur.getSante() == 0){
+						joueur.getSante().setValue(joueur.getSante().getValue()-100);
+						if(joueur.getSante().getValue() == 0){
 							jv.droite = new Image("demon_mort.png");
 							jv.gauche = new Image("demon_mort.png");
 							jv.haut = new Image("demon_mort.png");
 							jv.bas = new Image("demon_mort.png");
 							//System.exit(0);
 						}else{
-							JeuController.score = JeuController.score-20;	
+							if(JeuController.score_property.getValue()-20 >= 0)
+								JeuController.score_property.setValue(JeuController.score_property.getValue()-20);
+							else
+								JeuController.score_property.setValue(0);
 						}
-						JeuController.updateScore();
 						JeuController.setTouche(true);
 						(new Thread() {
 							  public void run() {

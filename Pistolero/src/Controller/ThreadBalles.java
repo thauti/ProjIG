@@ -10,8 +10,7 @@ public class ThreadBalles implements Runnable {
     public void run() {
         try {
             sleep(5000);
-            BalleController.balle = 5;
-            JeuController.updateBalle();
+            BalleController.balle.setValue(5);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

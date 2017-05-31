@@ -4,12 +4,20 @@ import View.*;
 import Model.*;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 
@@ -27,11 +35,12 @@ public class JeuController  extends Controller {
 	public static BalleView current;
 	int dir;
 
-	public static int score = 0;
-	public static Text score_t;
+	public static IntegerProperty score_property;
+	public  Text score_t;
+	public Text score_t2;
 
 	public static ArrayList<BalleController> balleliste;
-	public static Text balle;
+	public Text balle;
 	
 	public static boolean collisionVamp;
 	boolean rafale = false;
@@ -45,31 +54,38 @@ public class JeuController  extends Controller {
 		for(int i = 0; i < vampireSize; i++){
 			arrayVamp.add(new VampireController());
 		}
+
 		mc = new MapController();
 		JeuController.balleliste  = new ArrayList<BalleController>();
-		JeuController.score_t = new Text("Score : " + JeuController.score);
-		JeuController.score_t.setX(5);
-		JeuController.score_t.setY(15);
+		JeuController.score_property = new SimpleIntegerProperty(0);
+		score_t = new Text();
+		score_t.setX(80);
+		score_t.setY(15);
 
-		JeuController.balle = new Text(5,35,"Balles : "+ BalleController.balle);
+		score_t2 = new Text("Score :");
+		score_t2.setX(5);
+		score_t2.setY(15);
+
+		score_t.textProperty().bind(JeuController.score_property.asString());
+		BalleController.balle = new SimpleIntegerProperty(5);
+		balle = new Text();
+		balle.setX(5);
+		balle.setY(45);
+		balle.textProperty().bind(BalleController.balle.asString());
 		getView().getChildren().add(mc.getView());
 		for(int i = 0; i < vampireSize; i++){
 			getView().getChildren().add(arrayVamp.get(i).getView());
 		}
 		getView().getChildren().add(jc.getView());
 		getView().getChildren().add(score_t);
+		getView().getChildren().add(score_t2);
 		getView().getChildren().add(balle);
+
 		v = getView();
 		jm = (Joueur) jc.getModel();
 		this.collisionVamp = false;
 		
 
-		new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-
-			}
-		}.start();
 
 		getView().setOnKeyPressed(
 
@@ -94,7 +110,7 @@ public class JeuController  extends Controller {
 							break;
 						case SPACE:
 							bouge =0;
-							if(BalleController.balle > 0) {
+							if(BalleController.balle.getValue() > 0) {
 								BalleController bc;
 								if(rafale){
 									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
@@ -102,10 +118,9 @@ public class JeuController  extends Controller {
 
 									current = bc.getView();
 									getView().getChildren().add(bc.getView());
-									BalleController.balle--;
+									BalleController.balle.setValue(BalleController.balle.getValue()-1);
 									
-									JeuController.updateBalle();
-									if(BalleController.balle == 0)
+									if(BalleController.balle.getValue() == 0)
 									{
 										Thread t = new Thread(new ThreadBalles());
 										t.start();
@@ -117,10 +132,9 @@ public class JeuController  extends Controller {
 									
 									current = bc.getView();
 									getView().getChildren().add(bc.getView());
-									BalleController.balle--;
+									BalleController.balle.setValue(BalleController.balle.getValue()-1);
 									
-									JeuController.updateBalle();
-									if(BalleController.balle == 0)
+									if(BalleController.balle.getValue() == 0)
 									{
 										Thread t = new Thread(new ThreadBalles());
 										t.start();
@@ -135,10 +149,7 @@ public class JeuController  extends Controller {
 							rafale = !rafale;
 							System.out.println("rafale = : "+rafale);
 							break;
-						case R:
-							bouge = 0;
-							BalleController.balle = 10;
-							JeuController.updateBalle();
+
 					}
 				}
 		);
@@ -204,7 +215,7 @@ public class JeuController  extends Controller {
 	public void bouge(){
 
 	}
-	public boolean mordu(){
+	public boolean mordu(){/*
 		if(!touche){
 			for(int i = 0; i < arrayVamp.size(); i++){
 				double x = arrayVamp.get(i).getView().vm.getX();
@@ -224,9 +235,12 @@ public class JeuController  extends Controller {
 								jc.jv.bas = new Image("demon_mort.png");
 								//System.exit(0);
 							}else{
-								JeuController.score = JeuController.score-20;	
+								if(JeuController.score_property.getValue()-20 >= 0)
+									JeuController.score_property.setValue(JeuController.score_property.getValue()-20);
+								else
+									JeuController.score_property.setValue(0);
+
 							}
-							JeuController.updateScore();
 							touche = true;
 							(new Thread() {
 								  public void run() {
@@ -247,18 +261,10 @@ public class JeuController  extends Controller {
 			
 		}
 		return true;
+		*/
+		return false;
 	}
 
-	public static void updateScore()
-	{
-		JeuController.score_t.setText("Score : "+JeuController.score);
-
-	}
-	public static void updateBalle()
-	{
-		JeuController.balle.setText("Balles : "+ BalleController.balle);
-
-	}
 	public static void gameOver(){
 		System.exit(0);
 		Text tv = new Text("Game Over");
