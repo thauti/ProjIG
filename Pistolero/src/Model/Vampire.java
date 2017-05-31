@@ -18,6 +18,7 @@ public class Vampire extends Model{
 	public void setVie(int v){this.vie = v;}
 	public int getVie(){return this.vie;}
 
+	public boolean isMort(){if (mort) return true; else return false;}
 	public double getY() {return y;}
 	public void setY(double y) {this.y = y;}
 

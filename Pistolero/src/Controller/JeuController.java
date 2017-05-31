@@ -15,8 +15,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.StringConverter;
 
 import java.util.ArrayList;
@@ -36,17 +38,20 @@ public class JeuController  extends Controller {
 	int dir;
 
 	public static IntegerProperty score_property;
-	public  Text score_t;
+	public  Text score_t, bestscore_t;
 	public Text score_t2;
 
 	public static ArrayList<BalleController> balleliste;
 	public Text balle;
-	
+	public Text BalleHolder;
 	public static boolean collisionVamp;
 	boolean rafale = false;
 	static boolean touche = false;
+	static public boolean partieTerminee = false;
 	int shoot = 0;
 	int bouge = 0;
+
+	int bestscore;
 	public JeuController() {
 		super(null, new JeuView());
 		jc = new JoueurController();
@@ -55,13 +60,18 @@ public class JeuController  extends Controller {
 			arrayVamp.add(new VampireController());
 		}
 
+		bestscore = ScoreController.loadScore();
 		mc = new MapController();
 		JeuController.balleliste  = new ArrayList<BalleController>();
 		JeuController.score_property = new SimpleIntegerProperty(0);
 		score_t = new Text();
+		score_t.setTextAlignment(TextAlignment.LEFT);
 		score_t.setX(80);
 		score_t.setY(15);
 
+		bestscore_t = new Text(" Meilleur : "+bestscore);
+		bestscore_t.setX(110);
+		bestscore_t.setY(15);
 		score_t2 = new Text("Score :");
 		score_t2.setX(5);
 		score_t2.setY(15);
@@ -69,9 +79,14 @@ public class JeuController  extends Controller {
 		score_t.textProperty().bind(JeuController.score_property.asString());
 		BalleController.balle = new SimpleIntegerProperty(5);
 		balle = new Text();
-		balle.setX(5);
+		balle.setX(60);
 		balle.setY(45);
 		balle.textProperty().bind(BalleController.balle.asString());
+
+		BalleHolder = new Text("Balles : ");
+		BalleHolder.setX(5);
+		BalleHolder.setY(45);
+
 		getView().getChildren().add(mc.getView());
 		for(int i = 0; i < vampireSize; i++){
 			getView().getChildren().add(arrayVamp.get(i).getView());
@@ -80,7 +95,8 @@ public class JeuController  extends Controller {
 		getView().getChildren().add(score_t);
 		getView().getChildren().add(score_t2);
 		getView().getChildren().add(balle);
-
+		getView().getChildren().add(BalleHolder);
+		getView().getChildren().add(bestscore_t);
 		v = getView();
 		jm = (Joueur) jc.getModel();
 		this.collisionVamp = false;
@@ -94,19 +110,15 @@ public class JeuController  extends Controller {
 					switch (e.getCode()) {
 						case LEFT:
 							dir = 3;
-							mordu();
 							break;
 						case RIGHT:
 							dir = 2;
-							mordu();
 							break;
 						case UP:
 							dir = 1;
-							mordu();
 							break;
 						case DOWN:
 							dir = 0;
-							mordu();
 							break;
 						case SPACE:
 							bouge =0;
@@ -126,18 +138,19 @@ public class JeuController  extends Controller {
 										t.start();
 									}
 								}else if (shoot == 0) {
-									shoot = 1;
-									bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
-									JeuController.balleliste.add(bc);
-									
-									current = bc.getView();
-									getView().getChildren().add(bc.getView());
-									BalleController.balle.setValue(BalleController.balle.getValue()-1);
-									
-									if(BalleController.balle.getValue() == 0)
-									{
-										Thread t = new Thread(new ThreadBalles());
-										t.start();
+									if(!partieTerminee) {
+										shoot = 1;
+										bc = new BalleController(jm.getX(), jm.getY(), jm.getPos());
+										JeuController.balleliste.add(bc);
+
+										current = bc.getView();
+										getView().getChildren().add(bc.getView());
+										BalleController.balle.setValue(BalleController.balle.getValue() - 1);
+
+										if (BalleController.balle.getValue() == 0) {
+											Thread t = new Thread(new ThreadBalles());
+											t.start();
+										}
 									}
 								}
 								
@@ -170,7 +183,28 @@ public class JeuController  extends Controller {
 			@Override
 			public void handle(long now) {
 
-
+				if(partieTerminee)
+				{
+					gameOver();
+				}
+				boolean vivant = false;
+				for(VampireController v: arrayVamp)
+				{
+					Vampire m = (Vampire) v.getModel();
+					if(!m.isMort())
+					{
+						vivant = true;
+					}
+				}
+				if(!vivant)
+				{
+					partieTerminee = true;
+				}
+				if(jm.getSante().getValue() == 0)
+				{
+					jc.getView().setImgViewDead();
+					partieTerminee = true;
+				}
 				if (bouge == 1) {
 						switch (dir) {
 						case 0:
@@ -215,62 +249,34 @@ public class JeuController  extends Controller {
 	public void bouge(){
 
 	}
-	public boolean mordu(){/*
-		if(!touche){
-			for(int i = 0; i < arrayVamp.size(); i++){
-				double x = arrayVamp.get(i).getView().vm.getX();
-				double y = arrayVamp.get(i).getView().vm.getY();
-				double testx = jc.jv.getX();
-				double testy = jc.jv.getY();
-				if(arrayVamp.get(i).vm.mort == false){	
-					if (testx <= x + 32 && testx >= x) {
-						if (testy <= y + 32 && testy >= y) {
-							System.out.println("collision joueur");
-							Joueur joueur = jc.jv.getJoueur();
-							joueur.setSante(joueur.getSante()-100);
-							if(joueur.getSante() == 0){
-								jc.jv.droite = new Image("demon_mort.png");
-								jc.jv.gauche = new Image("demon_mort.png");
-								jc.jv.haut = new Image("demon_mort.png");
-								jc.jv.bas = new Image("demon_mort.png");
-								//System.exit(0);
-							}else{
-								if(JeuController.score_property.getValue()-20 >= 0)
-									JeuController.score_property.setValue(JeuController.score_property.getValue()-20);
-								else
-									JeuController.score_property.setValue(0);
 
-							}
-							touche = true;
-							(new Thread() {
-								  public void run() {
-									  try {
-										sleep(3);
-										touche = false;
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									    
-									  }
-									 }).start();
-						}
-					}
-				}
-			}
-			
-		}
-		return true;
-		*/
-		return false;
-	}
+	public void gameOver(){
+		//System.exit(0);
 
-	public static void gameOver(){
-		System.exit(0);
 		Text tv = new Text("Game Over");
-		tv.setFont(Font.font(25));
-		v.getChildren().add(tv);
+		tv.setFont(Font.font(35));
+
+		tv.setFill(Color.WHITE);
+		if(bestscore < score_property.getValue()) {
+			Text ms = new Text("Nouveau meilleur score");
+			ms.setFont(Font.font(20));
+			ms.setFill(Color.WHITE);
+			ms.setX(295);
+			ms.setY(250);
+			getView().getChildren().add(ms);
+			ScoreController.saveScore(score_property.getValue());
+		}
+		tv.setX(300);
+		tv.setY(200);
+		getView().getChildren().add(tv);
+
+		//try {
+		//	sleep(2000);
+		//} catch (InterruptedException e) {
+		//	e.printStackTrace();
+		//}
 	}
+
 	public static boolean getTouche(){
 		return touche;
 	}

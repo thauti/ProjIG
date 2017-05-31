@@ -1,5 +1,6 @@
 package View;
 
+import Controller.JeuController;
 import Controller.JoueurController;
 import Model.Joueur;
 import javafx.scene.image.Image;
@@ -12,7 +13,7 @@ import javafx.scene.text.Text;
 public class JoueurView extends View {
     JoueurController jc;
     Joueur jm;
-    public Image droite, gauche, haut, bas;
+    public Image droite, gauche, haut, bas, mort;
     ImageView cr;
 
     Text vie;
@@ -47,6 +48,11 @@ public class JoueurView extends View {
         {
             System.out.println("Erreur au chargement de l'image "+bas.getException().toString() );
         }
+        mort = new Image("demon_mort.png");
+        if(mort.isError())
+        {
+            System.out.println("Erreur au chargement de l'image "+mort.getException().toString() );
+        }
 
         cr = new ImageView(bas);
         cr.setX(jm.getX());
@@ -56,19 +62,24 @@ public class JoueurView extends View {
     }
     public void update()
     {
-        switch(jm.getPos())
-        {
-            case 0: cr.setImage(bas);
-                break;
-            case 1: cr.setImage(haut);
-                break;
-            case 2: cr.setImage(droite);
-                break;
-            case 3: cr.setImage(gauche);
-                break;
+        if(!JeuController.partieTerminee) {
+            switch (jm.getPos()) {
+                case 0:
+                    cr.setImage(bas);
+                    break;
+                case 1:
+                    cr.setImage(haut);
+                    break;
+                case 2:
+                    cr.setImage(droite);
+                    break;
+                case 3:
+                    cr.setImage(gauche);
+                    break;
+            }
+            cr.setX(jm.getX());
+            cr.setY(jm.getY());
         }
-        cr.setX(jm.getX());
-        cr.setY(jm.getY());
     }
     public double getX(){
     	return cr.getX();
@@ -79,4 +90,6 @@ public class JoueurView extends View {
     public Joueur getJoueur(){
     	return jm;
     }
+    public ImageView getImgView() { return cr;}
+    public void setImgViewDead(){ cr.setImage(mort);}
 }

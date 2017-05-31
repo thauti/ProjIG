@@ -51,7 +51,8 @@ public class VampireView extends View
 
 			@Override
 			public void handle(long now) {
-				update();
+				if(!JeuController.partieTerminee)
+					update();
 				
 			}
 		}.start();
@@ -80,27 +81,62 @@ public class VampireView extends View
 			if (Joueur.x < vm.getX()) {
 				//vm.setX(vm.getX() - 0.5);
 				vm.setX(vm.getX() - vitesse);
-				VampireController.mordre(vm);
+				//VampireController.mordre(vm);
 			}
 			if (Joueur.x > vm.getX()) {
 				//vm.setX(vm.getX() + 0.5);
 				vm.setX(vm.getX() + vitesse);
-				VampireController.mordre(vm);
+				//VampireController.mordre(vm);
 			}
 			if (Joueur.y < vm.getY()) {
 				//vm.setY(vm.getY() - 0.5);
 				vm.setY(vm.getY() - vitesse);
-				VampireController.mordre(vm);
+				//VampireController.mordre(vm);
 			}
 			if (Joueur.y > vm.getY()) {
 				//vm.setY(vm.getY() + 0.5);
 				vm.setY(vm.getY() + vitesse);
-				VampireController.mordre(vm);
+				//VampireController.mordre(vm);
 			}
 			iv.setX(vm.getX());
 			iv.setY(vm.getY());
+			VampireController.vampire(vm);
+			JoueurController joueur = JeuController.jc;
+			JoueurView v = JeuController.jc.getView();
+			Joueur jm = (Joueur) joueur.getModel();
+			if(v.getImgView().getBoundsInParent().intersects(iv.getBoundsInParent()))
+			{
+				if(!JeuController.getTouche()) {
+
+					jm.getSante().setValue(jm.getSante().getValue() - 100);
+					if (jm.getSante().getValue() == 0) {
+						v.droite = new Image("demon_mort.png");
+						v.gauche = new Image("demon_mort.png");
+						v.haut = new Image("demon_mort.png");
+						v.bas = new Image("demon_mort.png");
+						//System.exit(0);
+					} else {
+						if (JeuController.score_property.getValue() - 20 >= 0)
+							JeuController.score_property.setValue(JeuController.score_property.getValue() - 20);
+						else
+							JeuController.score_property.setValue(0);
+					}
+					JeuController.setTouche(true);
+					(new Thread() {
+						public void run() {
+							try {
+								sleep(500);
+								JeuController.setTouche(false);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}).start();
+				}
+			}
 		}
-		VampireController.vampire(vm);
+
 	}
 		
 	public void updateSkin() {
