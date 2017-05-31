@@ -69,6 +69,7 @@ public class JeuController  extends Controller {
 		score_t.setX(80);
 		score_t.setY(15);
 
+		//System.out.println("+"+ScoreController.loadScore());
 		bestscore_t = new Text(" Meilleur : "+bestscore);
 		bestscore_t.setX(110);
 		bestscore_t.setY(15);

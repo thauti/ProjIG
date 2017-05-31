@@ -20,8 +20,8 @@ public class Jeu extends Application{
 		JeuController jc = new JeuController();
 		primaryStage.setScene(new Scene(jc.getView(), 800, 600));
 		primaryStage.setResizable(false);
-
 		primaryStage.show();
+
 
 
 	}

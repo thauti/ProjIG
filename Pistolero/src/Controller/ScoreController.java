@@ -11,17 +11,17 @@ public class ScoreController{
             BufferedReader br = new BufferedReader(fr);
             String ligne = "";
             int score;
-            while ((ligne = br.readLine()) != null) {
-                System.out.println(ligne);
-            }
+           ligne = br.readLine();
+
 
             if(ligne != null) {
+                System.out.println("ok");
                 score = Integer.parseInt(ligne);
                 return score;
             }
             else return 0;
         } catch (Exception e) {
-            e.printStackTrace();
+
             return 0;
         }
     }
