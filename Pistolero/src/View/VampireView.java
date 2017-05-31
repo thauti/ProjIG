@@ -100,7 +100,60 @@ public class VampireView extends View
 			}
 			iv.setX(vm.getX());
 			iv.setY(vm.getY());
-			VampireController.vampire(vm);
+			//VampireController.vampire(vm, iv);
+			ArrayList<VampireController> tmp = new ArrayList<VampireController>();
+			for(VampireController v : JeuController.arrayVamp)
+			{
+				if(v != vc)
+				{
+					Vampire vmm = (Vampire)v.getModel();
+					VampireView vvv = v.getView();
+					if(!vmm.isMort())
+					{
+						if(iv != vvv.getIV()) {
+							if (iv.getBoundsInParent().intersects(vvv.getIV().getBoundsInParent()))
+							{
+								int test = (int)(Math.random() * 2);
+								System.out.println("test : "+ test);
+								JeuController.collisionVamp = true;
+								if(test == 0){
+									vmm.setVie(0);
+									vmm.mort = true;
+									vvv.updateSkin();
+
+								}else{
+									VampireController tampon = new VampireController();
+									tmp.add(tampon);
+								}
+								double rand = Math.random()*50-25;
+								vm.setX( vm.getX() + rand);
+								vm.setY( vm.getY() + rand);
+								(new Thread() {
+									public void run() {
+										try {
+											sleep(1000);
+											JeuController.collisionVamp = false;
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+
+									}
+								}).start();
+
+							}
+
+						}
+					}
+
+				}
+			}
+			for(VampireController vcc : tmp)
+			{
+				JeuController.arrayVamp.add(vcc);
+				JeuController.v.getChildren().add(vcc.getView());
+			}
+			tmp.clear();
 			JoueurController joueur = JeuController.jc;
 			JoueurView v = JeuController.jc.getView();
 			Joueur jm = (Joueur) joueur.getModel();

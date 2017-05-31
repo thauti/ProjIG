@@ -29,8 +29,8 @@ public class JeuController  extends Controller {
 
 	static int vampireSize = 5;
 	Model m;
-	static View v;
-	static ArrayList<VampireController> arrayVamp;
+	public static View v;
+	public static ArrayList<VampireController> arrayVamp;
 	MapController mc;
 	public static JoueurController jc;
 	Joueur jm;
